@@ -58,13 +58,20 @@ function getRandomNum(){
 } 
 
 function setNum(dataSource){
+    // if(leaveCellCount <0 ){
+    //     alert("over");
+    //     return;
+    // }
     let pos = getRandomPosition();
     const num = getRandomNum();
-    console.log(pos);
     if(dataSource[pos.x][pos.y] != -1){   
-        while(dataSource[pos.x][pos.y] == -1){
+        // console.log('conflict:', pos, dataSource);
+        while(true){
             pos = getRandomPosition();
+            if(dataSource[pos.x][pos.y] == -1)break;
         }
+        // console.log('correct:', pos);
+
     }
     dataSource[pos.x][pos.y] = num;
     leaveCellCount --;
@@ -108,31 +115,79 @@ function goRight(dataSource){
     }
 }
 
+// 
 function mergeRow(row1){
+    // let row = [].concat(row1);
+    // let i=0, j=1;
+    // while(j < SIZE){// 实际就是4
+    //     if(row[i] == -1){
+    //         for(let k=j; k<4; k++){
+    //             if(row[k] !== -1){
+    //                 // 合并相加的逻辑， 每合并一次1；剩余格子数-1
+    //                 if(i>0 && row[k] === row[i-1]){
+    //                     row[i-1] *= 2; // 合并相加
+    //                     leaveCellCount++;
+    //                 } else {
+    //                     row[i] = row[k];
+    //                     i++;
+    //                 }
+    //                 row[k] = -1;
+    //                 j = k+1;
+    //             }else{
+    //                 j++;
+    //             }
+    //         }
+    //     }else{
+    //         // i++;
+    //         // j++;
+    //         for(let k=j; k<4; k++){
+    //             if(row[k] !== -1){
+    //                 // 合并相加的逻辑， 每合并一次1；剩余格子数-1
+    //                 if(row[k] === row[i]){
+    //                     row[i] *= 2; // 合并相加
+    //                     leaveCellCount++;
+    //                     row[k] = -1;
+    //                     j = k+1;
+    //                     i++;
+    //                 } else if(k-i > 0){
+    //                     row[i+1] = row[k];
+    //                     i++;
+    //                     row[k] = -1;
+    //                     j = k+1;
+    //                 } else {
+    //                     i++;
+    //                     j++;
+    //                 }       
+                  
+    //             }else{
+    //                 j++;
+    //             }
+    //         }
+    //     }
+    // }
+    let row = squeezeRow(row1);
+    return row;
+}
+
+function squeezeRow(row1){
     let row = [].concat(row1);
-    let i=0, j=1;
-    while(j < SIZE){// 实际就是4
+    let i=0, k=1;
+    while(i<SIZE && k<SIZE){
         if(row[i] == -1){
-            for(let k=j; k<4; k++){
-                if(row[k] !== -1){
-                    // 合并相加的逻辑， 每合并一次1；剩余格子数-1
-                    if(i>0 && row[k] === row[i-1]){
-                        row[i-1] *= 2; // 合并相加
-                        leaveCellCount++;
-                    } else {
-                        row[i] = row[k];
-                        i++;
-                    }
-                    row[k] = -1;
-                    j = k+1;
-                }else{
-                    j++;
+            for(let j=k; j<SIZE; j++){
+                if(row[j] !== -1){
+                    row[i] = row[j];
+                    row[j] = -1;
+                    k = j+1;
+                    break;
                 }
             }
         }else{
-            i++;
-            j++;
+            k++;
         }
+        i++;
     }
     return row;
 }
+
+// console.log(squeezeRow([2, -1, 2, -1]));

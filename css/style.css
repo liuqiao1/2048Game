@@ -1,0 +1,23 @@
+/* 随着数字的位数 变化字体大小？ */
+main{
+    width: 400px;
+    height: 400px;
+    margin: 20px auto;
+    background-color: gainsboro;
+}
+.cell{
+    width: 100px;
+    height: 100px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    float: left;
+    box-sizing: border-box;
+    background-color: wheat;
+    background-clip: content-box;
+}
+.clearfix{
+    clear: both;
+   
+}

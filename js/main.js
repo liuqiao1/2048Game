@@ -33,13 +33,14 @@ window.onload=function(){
             // 取消监听事件
         }else{
             setNum(dataSource);
+            paint(dataSource, cells);
             // 检测下一步还有得玩儿吗
             if(leaveCellCount == 0 && !hasSame(dataSource)){
                 alert("Game over");
                 return false;
             }
         }
-        paint(dataSource, cells);
+       
     })
 } 
 
@@ -86,7 +87,7 @@ function setNum(dataSource){
     }
     dataSource[pos.x][pos.y] = num;
     leaveCellCount --;
-    console.log("leaveCellCount decrease:" + leaveCellCount);
+    console.log("leaveCellCount-1:" + leaveCellCount);
    
 }
 
@@ -99,47 +100,57 @@ function paint(dataSource, cells){
 }
 
 function goDown(dataSource){
-    console.log("go up", dataSource);
+    console.log("go down");
+    print(dataSource);
     // dataSource =
-     reverse(dataSource);
+    reverse(dataSource);
     for(let i=0; i<SIZE; i++){
         // row = dataSource[i];
         dataSource[i] = mergeRow(dataSource[i].reverse(), i).reverse();
     }
     reverse(dataSource);
-    console.log(dataSource);
+    print(dataSource);
     // console.log(mergeRow(dataSource, 0));
 }
 
 function goUp(dataSource){
-    console.log("go down", dataSource);
+    console.log("go up");
     // const ds = 
+    print(dataSource);
     reverse(dataSource);
     for(let i=0; i<SIZE; i++){
         // row = dataSource[i];
         dataSource[i] = mergeRow(dataSource[i], i);
     }
     reverse(dataSource);
+    print(dataSource);
+
     // console.log(ds);
 }
 
 function goLeft(dataSource){
-    console.log("go left", dataSource);
+    console.log("go left");
+    print(dataSource);
+
     for(let i=0; i<SIZE; i++){
         // row = dataSource[i];
         dataSource[i] = mergeRow(dataSource[i], i);
     }
-    console.log(dataSource);
+    print(dataSource);
     // console.log(mergeRow(dataSource, 0));
 }
 
 function goRight(dataSource){
-    console.log("go right", dataSource);
+    console.log("go right");
+    print(dataSource);
+
     for(let i=0; i<SIZE; i++){
         // row = dataSource[i];
         let temp = mergeRow(dataSource[i].reverse(), i);
         dataSource[i] = temp.reverse();
     }
+    print(dataSource);
+
 }
 
 // 
@@ -227,4 +238,12 @@ function hasSame(ds){
         }
     }
     return flag;
+}
+
+function print(dataSource){
+    console.log("*******************************************");
+    for(let i=0;i<SIZE; i++){
+        console.log(i+":", dataSource[i].join("   "));
+    }
+    console.log("*******************************************");
 }

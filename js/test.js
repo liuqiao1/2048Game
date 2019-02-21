@@ -1,5 +1,5 @@
-const ds = [[1,2,3], [4,5,6],[7,8,9]];
-console.log(ds);
+const ds = [[1,2,3], [4,5,5],[7,8,9]];
+// console.log(ds);
 
 function reverse(dataSource){
     let ds = [...dataSource];
@@ -18,4 +18,29 @@ function reverse(dataSource){
     return ds;
 }
 
-console.log(reverse(ds));
+console.log(hasSame(ds));
+
+function hasSame(ds){
+    let flag=false;
+    for(let i=0; i<ds.length; i++){
+        for(let j=0; j < ds[i].length; j++){
+            if(ds[i-1] && ds[i-1][j] === ds[i][j]){
+                flag = true;
+                break;
+            }
+            if(ds[i][j-1] && ds[i][j-1] === ds[i][j]){
+                flag = true;
+                break;
+            }
+            if(ds[i+1] && ds[i+1][j] === ds[i][j]){
+                flag = true;
+                break;
+            }
+            if(ds[i][j+1] && ds[i][j+1] === ds[i][j]){
+                flag = true;
+                break;
+            }
+        }
+    }
+    return flag;
+}

@@ -25,11 +25,20 @@ window.onload=function(){
         // right 39
         if(keyCode === 39)goRight(dataSource);
         if(leaveCellCount <= 0){
-            alert("Game over");
-            return false;
+            if(!hasSame(dataSource)){
+                alert("Game over");
+                return false;
+            }
+           
             // 取消监听事件
+        }else{
+            setNum(dataSource);
+            // 检测下一步还有得玩儿吗
+            if(leaveCellCount == 0 && !hasSame(dataSource)){
+                alert("Game over");
+                return false;
+            }
         }
-        setNum(dataSource);
         paint(dataSource, cells);
     })
 } 
@@ -195,3 +204,27 @@ function reverse(ds){
     // return ds;
 }
 // console.log(squeezeRow([2, -1, 2, -1]));
+function hasSame(ds){
+    let flag=false;
+    for(let i=0; i<ds.length; i++){
+        for(let j=0; j < ds[i].length; j++){
+            if(ds[i-1] && ds[i-1][j] === ds[i][j]){
+                flag = true;
+                break;
+            }
+            if(ds[i][j-1] && ds[i][j-1] === ds[i][j]){
+                flag = true;
+                break;
+            }
+            if(ds[i+1] && ds[i+1][j] === ds[i][j]){
+                flag = true;
+                break;
+            }
+            if(ds[i][j+1] && ds[i][j+1] === ds[i][j]){
+                flag = true;
+                break;
+            }
+        }
+    }
+    return flag;
+}

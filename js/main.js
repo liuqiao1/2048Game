@@ -19,6 +19,7 @@ window.onload=function(){
         const keyCode = event.keyCode;
         if(keyCode === 38)goUp(dataSource);
         // down 40
+        if(keyCode === 40)goDown(dataSource);
         // left 37
         if(keyCode === 37)goLeft(dataSource);
         // right 39
@@ -26,6 +27,7 @@ window.onload=function(){
         if(leaveCellCount <= 0){
             alert("Game over");
             return false;
+            // 取消监听事件
         }
         setNum(dataSource);
         paint(dataSource, cells);
@@ -58,10 +60,10 @@ function getRandomNum(){
 } 
 
 function setNum(dataSource){
-    // if(leaveCellCount <0 ){
-    //     alert("over");
-    //     return;
-    // }
+    if(leaveCellCount <0 ){
+        alert("over");
+        return;
+    }
     let pos = getRandomPosition();
     const num = getRandomNum();
     if(dataSource[pos.x][pos.y] != -1){   
@@ -87,85 +89,71 @@ function paint(dataSource, cells){
     }
 }
 
-function goUp(dataSource){
+function goDown(dataSource){
     console.log("go up", dataSource);
+    // dataSource =
+     reverse(dataSource);
     for(let i=0; i<SIZE; i++){
         // row = dataSource[i];
-        dataSource[i] = mergeRow(dataSource[i]);
+        dataSource[i] = mergeRow(dataSource[i].reverse(), i).reverse();
     }
+    reverse(dataSource);
     console.log(dataSource);
     // console.log(mergeRow(dataSource, 0));
 }
 
-function goLeft(dataSource){
-    console.log("go up", dataSource);
+function goUp(dataSource){
+    console.log("go down", dataSource);
+    // const ds = 
+    reverse(dataSource);
     for(let i=0; i<SIZE; i++){
         // row = dataSource[i];
-        dataSource[i] = mergeRow(dataSource[i]);
+        dataSource[i] = mergeRow(dataSource[i], i);
+    }
+    reverse(dataSource);
+    // console.log(ds);
+}
+
+function goLeft(dataSource){
+    console.log("go left", dataSource);
+    for(let i=0; i<SIZE; i++){
+        // row = dataSource[i];
+        dataSource[i] = mergeRow(dataSource[i], i);
     }
     console.log(dataSource);
     // console.log(mergeRow(dataSource, 0));
 }
 
 function goRight(dataSource){
+    console.log("go right", dataSource);
     for(let i=0; i<SIZE; i++){
         // row = dataSource[i];
-        let temp = mergeRow(dataSource[i].reverse());
+        let temp = mergeRow(dataSource[i].reverse(), i);
         dataSource[i] = temp.reverse();
     }
 }
 
 // 
-function mergeRow(row1){
-    // let row = [].concat(row1);
-    // let i=0, j=1;
-    // while(j < SIZE){// 实际就是4
-    //     if(row[i] == -1){
-    //         for(let k=j; k<4; k++){
-    //             if(row[k] !== -1){
-    //                 // 合并相加的逻辑， 每合并一次1；剩余格子数-1
-    //                 if(i>0 && row[k] === row[i-1]){
-    //                     row[i-1] *= 2; // 合并相加
-    //                     leaveCellCount++;
-    //                 } else {
-    //                     row[i] = row[k];
-    //                     i++;
-    //                 }
-    //                 row[k] = -1;
-    //                 j = k+1;
-    //             }else{
-    //                 j++;
-    //             }
-    //         }
-    //     }else{
-    //         // i++;
-    //         // j++;
-    //         for(let k=j; k<4; k++){
-    //             if(row[k] !== -1){
-    //                 // 合并相加的逻辑， 每合并一次1；剩余格子数-1
-    //                 if(row[k] === row[i]){
-    //                     row[i] *= 2; // 合并相加
-    //                     leaveCellCount++;
-    //                     row[k] = -1;
-    //                     j = k+1;
-    //                     i++;
-    //                 } else if(k-i > 0){
-    //                     row[i+1] = row[k];
-    //                     i++;
-    //                     row[k] = -1;
-    //                     j = k+1;
-    //                 } else {
-    //                     i++;
-    //                     j++;
-    //                 }       
-                  
-    //             }else{
-    //                 j++;
-    //             }
-    //         }
-    //     }
-    // }
+function mergeRow(row1, rowIndex){
     let row = squeezeRow(row1);
+    let i=0; 
+    while(i<SIZE-1){
+        if(row[i] == -1)break;
+        if(row[i] === row[i+1]){
+            row[i] *= 2;
+            row[i+1] = -1;
+            // 全部往前移动一位
+            for(j=i+1; j<SIZE-1; j++){
+                row[j] = row[j+1];
+            }
+            row[SIZE-1] =  -1;
+            leaveCellCount ++;
+            console.log("merge:",rowIndex, i);
+            console.log("leaveCellCount+1:", leaveCellCount);
+            break;
+        }
+        i++;
+    }
     return row;
 }
 
@@ -190,4 +178,20 @@ function squeezeRow(row1){
     return row;
 }
 
+
+// 矩阵逆置
+function reverse(ds){
+    // let ds = [...dataSource];
+    // console.log("ds:", ds);
+    for(let i=0; i<SIZE; i++){
+        for(let j=i+1; j<SIZE; j++){
+            let temp = ds[i][j];
+            ds[i][j] = ds[j][i];
+            ds[j][i] = temp;
+            // console.log("交换", ds[i][j], ds[j][i]);
+        }
+    }
+    // console.log("reverse finish,", ds);
+    // return ds;
+}
 // console.log(squeezeRow([2, -1, 2, -1]));

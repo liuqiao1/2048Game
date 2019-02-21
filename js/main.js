@@ -2,12 +2,7 @@ const SIZE = 4;
 let leaveCellCount = SIZE * SIZE;
 
 
-// console.log(dataSource);
-
-// let initial = getRandomNum();
-// console.log(initial);
 window.onload=function(){ 
-    // document.getElementById("mytest").style.backgroundColor="#639"; 
     const cells = document.getElementsByClassName("cell");
     let dataSource = initData();
     paint(dataSource, cells);
